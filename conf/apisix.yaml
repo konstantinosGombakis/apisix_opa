@@ -1,0 +1,11 @@
+routes:
+  -
+    uri: /hello
+    upstream:
+      type: roundrobin
+      nodes:
+        "web:80": 1
+    plugins:
+      opa:
+        host: "http://opa:8181"
+        policy: "/v1/data/apisix/authz/allow"

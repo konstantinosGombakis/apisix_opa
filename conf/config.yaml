@@ -1,0 +1,2 @@
+apisix:
+  config_center: yaml

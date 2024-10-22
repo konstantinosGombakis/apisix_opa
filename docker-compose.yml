@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  apisix:
+    image: apache/apisix:latest
+    volumes:
+      - ./conf/apisix.yaml:/usr/local/apisix/conf/apisix.yaml:ro
+      - ./conf/config.yaml:/usr/local/apisix/conf/config.yaml:ro
+    ports:
+      - "9080:9080"  # HTTP port
+      - "9443:9443"  # HTTPS port
+    depends_on:
+      - opa
+      - web
+
+  opa:
+    image: openpolicyagent/opa:latest
+    volumes:
+      - ./conf/policy.rego:/policy.rego:ro
+    command: ["run", "--server", "--log-level=debug", "/policy.rego"]
+    ports:
+      - "8181:8181"
+
+  web:
+    image: nginx:alpine
+    volumes:
+      - ./web:/usr/share/nginx/html:ro
+    ports:
+      - "80"
