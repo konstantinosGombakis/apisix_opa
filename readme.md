@@ -1,6 +1,6 @@
 # no working
-curl -i -X GET http://localhost:9080/index.html 
+curl -i -X GET http://localhost:9080
 
 # working
-curl -i -X GET http://localhost:9080/index.html -H "apikey: example-key"
+curl -i -X GET http://localhost:9080 -H "apikey: example-key"
 
