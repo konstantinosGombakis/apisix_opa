@@ -23,18 +23,12 @@ services:
     ports:
       - "8181:8181"
 
-  # web:
-  #   image: nginx:alpine
-  #   volumes:
-  #     - ./web:/usr/share/nginx/html:ro
-  #   ports:
-  #     - "80:80"
-
   backend:
     image: nginx:1.19.0-alpine
     restart: always
     volumes:
       - ./upstream/backend.conf:/etc/nginx/nginx.conf
+      - ./web:/usr/share/nginx/html:ro
     ports:
       - "9081:80/tcp"
     environment:

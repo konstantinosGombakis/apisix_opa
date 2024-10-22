@@ -6,7 +6,7 @@ upstreams:
       "backend:80": 1
 routes:
   - name: "example-route"
-    uri: /
+    uri: /*
     upstream_id: 1
     plugins:
       key-auth: {}
