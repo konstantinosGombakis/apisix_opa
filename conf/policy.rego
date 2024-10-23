@@ -1,7 +1,7 @@
 package apisix.authz
 
-default allow = false
+default allow = {"result": false}
 
-allow {
+allow = {"result": true} {
     input.request.headers["x-auth"]
 }

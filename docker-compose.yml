@@ -17,6 +17,7 @@ services:
 
   opa:
     image: openpolicyagent/opa:latest
+    container_name: opa
     volumes:
       - ./conf/policy.rego:/policy.rego:ro
     command: ["run", "--server", "--log-level=debug", "/policy.rego"]
