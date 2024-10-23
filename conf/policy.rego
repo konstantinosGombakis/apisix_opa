@@ -1,7 +1,24 @@
 package apisix.authz
 
-default allow = {"result": false}
+# Default deny
+default allow = false
 
-allow = {"result": true} {
-    input.request.headers["x-auth"]
+# Allow if method is GET
+#allow {
+# input.request.method = "GET"
+#}
+
+# Allow if header x-api-key matches
+allow {
+  input.request.headers["x-api-key"] = "your-api-key"
+}
+
+# Allow if path starts with /allowed-path
+#allow {
+#  startswith(input.path, "/allowed-path")
+#}
+
+# OPA should return only one result with an allow field
+allow_response = {
+  "allow": allow
 }
