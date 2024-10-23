@@ -1,25 +1,44 @@
+Testing the integration of OPA and APISIX
+
+run: ```docker compose up```
+
+OPA rules -> conf/policy.rego
+
+APISIX in standalone mode (no needed etcd)->conf/apisix.yaml
+
 # Not authorized
+```bash
 curl -i -X GET http://localhost:9080
+```
+```bash
 curl -i -X GET http://localhost:9080/secure.html 
+```
+```bash
 curl -i -X GET http://localhost:9080/secure.html  -H "x-api-key: your-api-key1"
+```
 
 # working
+```bash
 curl -i -X GET http://localhost:9080 -H "x-api-key: your-api-key"
+```
+```bash
 curl -i -X GET http://localhost:9080/secure.html  -H "x-api-key: your-api-key"
-
-
-
+```
 
 # Creation routes for OPA and apisix
 from conf/policy.rego-> package apisix.authz
+
 we create a endpoint /v1/data/apisix/authz for apisix to send the request to get the policy output (true/false)
+
 We set on conf/apisix.yaml the endpoint-> policy: "apisix/authz"
 
 
 ## apisix to opa
 apisix create the following json for the opa to check:
 
-```
+So we need to set the opa rules according to the json ie input.request.headers to get the headers array
+
+```json
 {
     "client_addr": "192.168.128.4:54698",
     "level": "info",
@@ -58,6 +77,7 @@ apisix create the following json for the opa to check:
 ```
 ### opa response
 ### not allowed
+```json
 {
   "client_addr": "192.168.128.4:54698",
   "level": "info",
@@ -78,9 +98,9 @@ apisix create the following json for the opa to check:
   "resp_status": 200,
   "time": "2024-10-23T10:11:37Z"
 }
-
+```
 ### allowed
-
+```json
 {
   "client_addr": "192.168.128.4:54698",
   "level": "info",
@@ -101,3 +121,4 @@ apisix create the following json for the opa to check:
   "resp_status": 200,
   "time": "2024-10-23T10:11:37Z"
 }
+```
